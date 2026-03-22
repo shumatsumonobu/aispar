@@ -14,14 +14,14 @@
             neon: { green: '#00ffaa', cyan: '#00e5ff', pink: '#ff3d71', purple: '#a855f7' },
           },
           fontFamily: {
-            sans: ["'Noto Sans JP'", 'sans-serif'],
+            sans: [ "'Noto Sans JP'", 'sans-serif'],
             mono: ["'JetBrains Mono'", 'monospace'],
           },
         },
       },
     }
   </script>
-  <link rel="stylesheet" href="style.css?v=38">
+  <link rel="stylesheet" href="style.css?v=40">
   <style>
     /* Tailwind CDN警告バナーを非表示 */
     .tw-warning, [data-tw-warning], #tailwindcss-warning { display: none !important; }
@@ -29,7 +29,7 @@
 </head>
 <body class="font-sans text-base bg-base text-[#c8c8d0] min-h-screen antialiased">
   <div class="layout">
-    <main class="py-12 px-10 sm:py-8 sm:px-4 relative z-[1]">
+    <main class="py-8 px-4 md:py-12 md:px-10 relative z-[1]">
       <header class="mb-10">
         <div class="header-bar">
           <button id="history-toggle" class="header-btn history-toggle">LOG</button>
@@ -43,9 +43,9 @@
 
       <div class="flex gap-2.5 mb-8">
         <input type="text" id="company" placeholder="会社名を入力" autocomplete="off" autofocus
-          class="flex-1 px-5 py-3.5 sm:px-4 sm:py-3 text-base border border-[rgba(255,255,255,0.1)] rounded-lg bg-[rgba(255,255,255,0.04)] text-[#e0e0e0] outline-none transition focus:border-neon-cyan focus:shadow-[0_0_12px_rgba(0,229,255,0.1)] placeholder:text-[#777]">
+          class="flex-1 min-w-0 px-3 py-3 md:px-5 md:py-3.5 text-base border border-[rgba(255,255,255,0.1)] rounded-lg bg-[rgba(255,255,255,0.04)] text-[#e0e0e0] outline-none transition focus:border-neon-cyan focus:shadow-[0_0_12px_rgba(0,229,255,0.1)] placeholder:text-[#777]">
         <button id="analyze-btn"
-          class="px-8 py-3.5 sm:px-5 sm:py-3 text-sm font-bold font-mono border border-neon-green rounded-lg bg-transparent text-neon-green cursor-pointer whitespace-nowrap transition uppercase tracking-wider hover:bg-[rgba(0,255,170,0.1)] hover:shadow-[0_0_16px_rgba(0,255,170,0.15)] active:scale-[0.97] disabled:border-[#444] disabled:text-[#444] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
+          class="px-4 py-3 md:px-8 md:py-3.5 text-sm font-bold font-mono border border-neon-green rounded-lg bg-transparent text-neon-green cursor-pointer whitespace-nowrap transition uppercase tracking-wider hover:bg-[rgba(0,255,170,0.1)] hover:shadow-[0_0_16px_rgba(0,255,170,0.15)] active:scale-[0.97] disabled:border-[#444] disabled:text-[#444] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
           SCAN
         </button>
       </div>

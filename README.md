@@ -8,7 +8,7 @@
 
 <br />
 
-<video src="screenshots/demo.webm" autoplay loop muted playsinline width="100%"></video>
+<video src="screenshots/demo.mp4" autoplay loop muted playsinline width="100%"></video>
 
 <br />
 

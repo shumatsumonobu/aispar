@@ -1,0 +1,11 @@
+# 依存パッケージ
+node_modules/
+
+# 環境変数・認証情報
+.env
+service-account*.json
+
+# データファイル（履歴・設定）
+data/
+!data/settings-sample.json
+

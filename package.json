@@ -1,0 +1,24 @@
+{
+  "name": "aispar",
+  "version": "1.0.0",
+  "description": "会社名を入れろ。残りは全部やる。",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "npx nodemon server.js",
+    "capture": "node scripts/capture-demo.js",
+    "build:pages": "node scripts/build-pages.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@google/genai": "^1.46.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "playwright": "^1.58.2"
+  }
+}

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AISPAR — 会社名を入れろ。偵察もロープレも全部やる</title>
+  <meta name="description" content="会社名を入れるだけ。AIが偵察・作戦立案・ロープレ・フィードバックまで全部やる">
+  <meta property="og:title" content="AISPAR">
+  <meta property="og:description" content="会社名を入れろ。偵察もロープレも全部やる">
+  <meta property="og:image" content="https://shumatsumonobu.github.io/aispar/screenshots/ogp.png">
+  <meta property="og:url" content="https://shumatsumonobu.github.io/aispar/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AISPAR">
+  <meta name="twitter:description" content="会社名を入れろ。偵察もロープレも全部やる">
+  <meta name="twitter:image" content="https://shumatsumonobu.github.io/aispar/screenshots/ogp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a12;
+      --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --green: #00ffaa;
+      --cyan: #00e5ff;
+      --pink: #ff3d71;
+      --purple: #a855f7;
+      --text: #c8c8d0;
+      --muted: #9494b0;
+      --dim: #7a7a96;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* === Hero === */
+    .hero {
+      text-align: center;
+      padding: 100px 24px 60px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.3em;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 16px;
+    }
+
+    .hero .tagline {
+      font-size: 1.1rem;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 40px;
+    }
+
+    .hero .cta {
+      display: inline-block;
+      padding: 14px 40px;
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      color: var(--green);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: all 0.2s;
+    }
+
+    .hero .cta:hover {
+      background: rgba(0,255,170,0.1);
+      box-shadow: 0 0 20px rgba(0,255,170,0.15);
+    }
+
+    /* === Video === */
+    .video-section {
+      max-width: 900px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+
+    .video-section video {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+
+    /* === Features === */
+    .features {
+      max-width: 900px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      backdrop-filter: blur(8px);
+      transition: transform 0.15s, border-color 0.2s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    .feature-card .icon {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+
+    .feature-card h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .feature-card:nth-child(1) h3 { color: var(--cyan); }
+    .feature-card:nth-child(2) h3 { color: var(--pink); }
+    .feature-card:nth-child(3) h3 { color: var(--green); }
+
+    .feature-card:nth-child(1) { border-left: 3px solid var(--cyan); }
+    .feature-card:nth-child(2) { border-left: 3px solid var(--pink); }
+    .feature-card:nth-child(3) { border-left: 3px solid var(--green); }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* === How it works === */
+    .flow {
+      max-width: 600px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .flow h2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 24px;
+    }
+
+    .flow-steps {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 2.2;
+    }
+
+    .flow-steps .arrow {
+      color: var(--green);
+    }
+
+    /* === Tech === */
+    .tech {
+      max-width: 600px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .tech h2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 20px;
+    }
+
+    .tech-list {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .tech-item {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--dim);
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+
+    /* === Footer === */
+    footer {
+      text-align: center;
+      padding: 40px 24px 60px;
+      border-top: 1px solid var(--border);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .footer-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--green); }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--dim);
+    }
+
+    /* === Scrollbar === */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,255,170,0.15); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(0,255,170,0.3); }
+    * { scrollbar-width: thin; scrollbar-color: rgba(0,255,170,0.15) transparent; }
+
+    /* === Mobile === */
+    @media (max-width: 768px) {
+      .hero { padding: 60px 20px 40px; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero .tagline { font-size: 0.95rem; }
+      .features { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <h1>AISPAR</h1>
+    <p class="tagline">会社名を入れろ。偵察もロープレも全部やる</p>
+    <a href="demo.html" class="cta">Demo</a>
+  </section>
+
+  <section class="video-section">
+    <video src="screenshots/demo.webm" autoplay loop muted playsinline></video>
+  </section>
+
+  <section class="features">
+    <div class="feature-card">
+      <div class="icon">🔍</div>
+      <h3>偵察</h3>
+      <p>会社名を入れるだけ。AIがニュース・決算・採用情報を検索して、現状分析・おすすめ製品・トークポイントを自動生成</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎙</div>
+      <h3>ロープレ</h3>
+      <p>AIが相手企業の担当者になりきって応戦。予算・工数・セキュリティ、あらゆる角度から切り返してくる</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📊</div>
+      <h3>フィードバック</h3>
+      <p>終了後に5段階スコア。良かった点・改善点・次のコツをAIが評価してくれる</p>
+    </div>
+  </section>
+
+  <section class="flow">
+    <h2>How it works</h2>
+    <div class="flow-steps">
+      会社名を入力<br>
+      <span class="arrow">↓</span><br>
+      AIが偵察・作戦立案<br>
+      <span class="arrow">↓</span><br>
+      そのままAI相手にロープレ<br>
+      <span class="arrow">↓</span><br>
+      スコア付きフィードバック
+    </div>
+  </section>
+
+  <section class="tech">
+    <h2>Tech Stack</h2>
+    <div class="tech-list">
+      <span class="tech-item">Node.js</span>
+      <span class="tech-item">Gemini 2.5 Flash</span>
+      <span class="tech-item">Google Custom Search</span>
+      <span class="tech-item">Tailwind CSS</span>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="demo.html">Demo</a>
+      <a href="https://github.com/shumatsumonobu/aispar">GitHub</a>
+      <a href="https://x.com/shumatsumonobu">X</a>
+    </div>
+    <p class="footer-copy">MIT License</p>
+  </footer>
+
+</body>
+</html>

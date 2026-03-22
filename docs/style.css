@@ -1,0 +1,924 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+/* === レイアウト === */
+.layout {
+  min-height: 100vh;
+  padding-right: 380px;
+}
+
+/* === カスタムスクロールバー === */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 170, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 170, 0.3);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 170, 0.15) transparent;
+}
+
+/* === サイドバー === */
+.sidebar {
+  width: 380px;
+  background: #0d0d14;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(0, 255, 170, 0.1);
+  transition: border-color 0.3s;
+  overflow: hidden;
+}
+
+/* 分析モード */
+.sidebar.analysis-mode {
+  border-left-color: rgba(0, 229, 255, 0.15);
+}
+
+/* --- 分析カード（上段） --- */
+.sidebar .sidebar-analysis { display: none; }
+.sidebar.analysis-mode .sidebar-analysis {
+  display: block;
+  padding: 16px 14px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* --- 履歴（下段 / 通常時はフル高さ） --- */
+.sidebar-history {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 分析モード時は履歴を縮小 */
+.sidebar.analysis-mode .sidebar-history {
+  flex: 0 0 auto;
+  max-height: 200px;
+}
+
+.sidebar-history-header {
+  padding: 16px 20px 10px;
+  flex-shrink: 0;
+}
+
+.sidebar-history-header h2 {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #7a7a96;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  margin: 0;
+}
+
+.sidebar-history-list {
+  padding: 0 12px 12px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* サイドバー内の分析カードをコンパクトに */
+.sidebar-analysis .card {
+  padding: 14px 16px;
+  font-size: 0.88rem;
+  margin-bottom: 10px;
+}
+
+.sidebar-analysis .card-label {
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  margin-bottom: 6px;
+}
+
+.sidebar-analysis .company-name {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.sidebar-analysis .concern-item { margin-bottom: 8px; }
+.sidebar-analysis .concern-q { font-size: 0.85rem; }
+.sidebar-analysis .concern-a { font-size: 0.85rem; }
+.sidebar-analysis ul { font-size: 0.88rem; }
+.sidebar-analysis .product-name { font-size: 0.95rem; }
+
+/* === ヘッダーバー === */
+.header-bar {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+}
+
+.header-btn {
+  position: absolute;
+  top: 4px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #9494b0;
+  transition: all 0.2s;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.header-btn:hover {
+  border-color: #00ffaa;
+  color: #00ffaa;
+  background: rgba(0, 255, 170, 0.08);
+}
+
+/* CONFIGは右 */
+#settings-btn { right: 0; }
+
+/* LOGは左 — PCでは非表示（サイドバーが常時見える） */
+.header-btn.history-toggle {
+  left: 0;
+  display: none;
+}
+
+/* === 製品未登録メッセージ === */
+.empty-products-msg {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.empty-products-msg p {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #e0e0e0;
+}
+
+.empty-products-msg .empty-products-sub {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #a0a0b0;
+  margin-top: 8px;
+}
+
+.open-settings-btn {
+  margin-top: 20px;
+  padding: 12px 28px;
+  background: transparent;
+  color: #00ffaa;
+  border: 1px solid #00ffaa;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.open-settings-btn:hover {
+  background: rgba(0, 255, 170, 0.1);
+  box-shadow: 0 0 12px rgba(0, 255, 170, 0.2);
+}
+
+/* === 会社名入力 === */
+#company {
+  background: #1a1a2e;
+  color: #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  caret-color: #00ffaa;
+}
+
+#company::placeholder {
+  color: #7a7a96;
+}
+
+#company:focus {
+  border-color: #00e5ff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.1);
+}
+
+/* === ローディング === */
+.loading {
+  text-align: center;
+  padding: 48px;
+}
+
+.bouncing-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: bounce 1.4s ease-in-out infinite;
+}
+
+.dot-1 { background: #00ffaa; animation-delay: 0s; }
+.dot-2 { background: #00e5ff; animation-delay: 0.2s; }
+.dot-3 { background: #a855f7; animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0.5) translateY(0);
+    opacity: 0.3;
+  }
+  40% {
+    transform: scale(1) translateY(-10px);
+    opacity: 1;
+  }
+}
+
+/* === 結果エリア === */
+.result { margin-bottom: 40px; }
+
+.result .company-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #00ffaa;
+  margin-bottom: 16px;
+  padding-left: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.result .error {
+  color: #ff5555;
+  font-size: 0.95rem;
+}
+
+/* === カード === */
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 22px 24px;
+  margin-bottom: 12px;
+  line-height: 1.8;
+  backdrop-filter: blur(8px);
+  transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-blue { border-left: 3px solid #00e5ff; }
+.card-pink { border-left: 3px solid #ff3d71; }
+.card-green { border-left: 3px solid #00ffaa; }
+.card-orange { border-left: 3px solid #a855f7; }
+
+.card-label {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.card-blue .card-label { background: rgba(0, 229, 255, 0.15); color: #00e5ff; }
+.card-pink .card-label { background: rgba(255, 61, 113, 0.15); color: #ff3d71; }
+.card-green .card-label { background: rgba(0, 255, 170, 0.15); color: #00ffaa; }
+.card-orange .card-label { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
+
+.card p, .card li {
+  color: #c8c8d0;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.card ul {
+  padding-left: 16px;
+  list-style: none;
+}
+
+.card ul li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 8px;
+}
+
+.card ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: #00ffaa;
+}
+
+.product-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ff3d71;
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.concern-item { margin-bottom: 14px; }
+.concern-item:last-child { margin-bottom: 0; }
+
+.concern-q {
+  font-weight: 700;
+  color: #e0e0e0;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.concern-a {
+  color: #a0a0b0;
+  font-size: 0.95rem;
+  padding-left: 20px;
+}
+
+/* === カード出現アニメーション === */
+.card-appear {
+  animation: cardSlideUp 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes cardSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === 履歴アイテム === */
+.history-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.history-item:hover {
+  background: rgba(0, 255, 170, 0.06);
+  border-color: rgba(0, 255, 170, 0.2);
+}
+
+.history-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-item .name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #c8c8d0;
+}
+
+.history-item .date {
+  color: #7a7a96;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.history-delete {
+  background: none;
+  border: none;
+  color: #7a7a96;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.history-delete:hover { color: #ff3d71; }
+
+.history-empty {
+  color: #9494b0;
+  padding: 8px;
+  font-size: 0.85rem;
+}
+
+.history-loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* === スマホ用履歴トグル（ヘッダー内） === */
+
+/* === メインエリアのチャット === */
+.main-chat {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 220px);
+}
+
+/* === ロープレUI === */
+.roleplay {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 61, 113, 0.15);
+  border-radius: 10px;
+  padding: 0;
+  margin-bottom: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.roleplay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: rgba(255, 61, 113, 0.08);
+  border-bottom: 1px solid rgba(255, 61, 113, 0.2);
+  color: #ff3d71;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  gap: 12px;
+}
+
+.roleplay-header span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.roleplay-end-btn {
+  padding: 7px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid #ff3d71;
+  border-radius: 6px;
+  background: transparent;
+  color: #ff3d71;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.roleplay-end-btn:hover {
+  background: rgba(255, 61, 113, 0.1);
+}
+
+.roleplay-end-btn:disabled {
+  border-color: #444;
+  color: #444;
+  cursor: not-allowed;
+}
+
+/* === チャットメッセージ === */
+.chat-messages {
+  padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  min-height: 0;
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  animation: bubbleIn 0.25s ease both;
+}
+
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.chat-bubble p { margin: 0; color: inherit; }
+
+/* タイピングインジケーター */
+.typing-dots {
+  display: flex;
+  gap: 5px;
+  padding: 4px 0;
+}
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a855f7;
+  animation: typingPulse 1.2s ease-in-out infinite;
+}
+
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingPulse {
+  0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); }
+  30% { opacity: 1; transform: scale(1); }
+}
+
+.chat-role {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.chat-customer {
+  align-self: flex-start;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  color: #d0c8e0;
+  border-bottom-left-radius: 2px;
+}
+
+.chat-sales {
+  align-self: flex-end;
+  background: rgba(0, 229, 255, 0.12);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: #c8e8f0;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-feedback {
+  align-self: stretch;
+  max-width: 100%;
+  background: rgba(0, 255, 170, 0.05);
+  color: #c8c8d0;
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: 8px;
+}
+
+/* === チャット入力 === */
+.chat-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  caret-color: #00ffaa;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.chat-input-area input:focus {
+  border-color: #00e5ff;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.1);
+}
+
+.chat-input-area input::placeholder { color: #7a7a96; }
+
+.chat-input-area button {
+  padding: 12px 22px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid #00e5ff;
+  border-radius: 6px;
+  background: transparent;
+  color: #00e5ff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.chat-input-area button:hover {
+  background: rgba(0, 229, 255, 0.1);
+}
+
+.chat-input-area button:disabled {
+  border-color: #444;
+  color: #444;
+  cursor: not-allowed;
+}
+
+/* === フィードバックカード === */
+.feedback-card { padding: 4px 0; }
+
+.feedback-score {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #00ffaa;
+  letter-spacing: 2px;
+}
+
+.feedback-section { margin-bottom: 10px; }
+
+.feedback-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.feedback-label.good {
+  background: rgba(0, 255, 170, 0.12);
+  color: #00ffaa;
+}
+
+.feedback-label.improve {
+  background: rgba(255, 61, 113, 0.12);
+  color: #ff3d71;
+}
+
+.feedback-section ul {
+  padding-left: 14px;
+  list-style: none;
+}
+
+.feedback-section ul li {
+  position: relative;
+  padding-left: 12px;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+  color: #a0a0b0;
+  line-height: 1.7;
+}
+
+.feedback-section ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: #7a7a96;
+}
+
+.feedback-tip {
+  font-size: 0.95rem;
+  color: #c8c8d0;
+  padding: 10px 14px;
+  background: rgba(0, 229, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.1);
+  border-radius: 6px;
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+.hidden { display: none; }
+
+/* === 設定モーダル === */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden { display: none; }
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  position: relative;
+  background: #12121e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 560px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  animation: modalIn 0.25s ease-out;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.no-products {
+  color: #9494b0;
+  text-align: center;
+  padding: 24px;
+  font-size: 1rem;
+}
+
+.product-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.product-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.product-card-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #00ffaa;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.product-delete {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #7a7a96;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.product-delete:hover {
+  color: #ff3d71;
+}
+
+.product-card-body label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #7a7a96;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.product-card-body input,
+.product-card-body textarea {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #e0e0e0;
+  background: #1a1a2e;
+  caret-color: #00ffaa;
+  transition: border-color 0.2s;
+}
+
+.product-card-body input:focus,
+.product-card-body textarea:focus {
+  outline: none;
+  border-color: #00e5ff;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.1);
+}
+
+.product-card-body textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.add-product-btn {
+  width: 100%;
+  padding: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #7a7a96;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 4px;
+}
+
+.add-product-btn:hover {
+  border-color: #00ffaa;
+  color: #00ffaa;
+  background: rgba(0, 255, 170, 0.05);
+}
+
+/* === スマホ対応 === */
+@media (max-width: 768px) {
+  .layout { padding-right: 0; }
+
+  .header-btn.history-toggle {
+    display: inline-block;
+  }
+
+  .header-subtitle {
+    display: none;
+  }
+
+  .card {
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: 60vh;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 12px 12px 0 0;
+    border-left: none;
+    border-top: 1px solid rgba(0, 255, 170, 0.15);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    z-index: 99;
+  }
+
+  .sidebar.open { transform: translateY(0); }
+
+  /* モバイルで分析モード */
+  .sidebar.analysis-mode {
+    height: 70vh;
+    z-index: 100;
+  }
+
+  .sidebar.analysis-mode.open { transform: translateY(0); }
+
+  /* モバイルでは分析モード時に履歴を非表示（スペース不足） */
+  .sidebar.analysis-mode .sidebar-history { display: none; }
+
+  /* 分析モード中はINTELボタンをシアンに */
+  .analysis-active .header-btn.history-toggle {
+    border-color: #00e5ff;
+    color: #00e5ff;
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 98;
+  }
+
+  .chat-bubble { max-width: 88%; }
+}

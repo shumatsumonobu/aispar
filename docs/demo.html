@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AISPAR</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            base: { DEFAULT: '#0a0a12', light: '#12121e', card: '#16162a' },
+            neon: { green: '#00ffaa', cyan: '#00e5ff', pink: '#ff3d71', purple: '#a855f7' },
+          },
+          fontFamily: {
+            sans: ["'Noto Sans JP'", 'sans-serif'],
+            mono: ["'JetBrains Mono'", 'monospace'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="style.css?v=38">
+  <style>
+    /* Tailwind CDN警告バナーを非表示 */
+    .tw-warning, [data-tw-warning], #tailwindcss-warning { display: none !important; }
+  </style>
+</head>
+<body class="font-sans text-base bg-base text-[#c8c8d0] min-h-screen antialiased">
+  <div class="layout">
+    <main class="py-12 px-10 sm:py-8 sm:px-4 relative z-[1]">
+      <header class="mb-10">
+        <div class="header-bar">
+          <button id="history-toggle" class="header-btn history-toggle">LOG</button>
+          <div class="text-center">
+            <h1 class="text-4xl sm:text-3xl font-bold text-neon-green tracking-[0.3em] font-mono">AISPAR</h1>
+            <p class="header-subtitle mt-2 text-[#9494b0] text-sm font-mono tracking-wide">会社名を入れろ。偵察もロープレも全部やる</p>
+          </div>
+          <button id="settings-btn" class="header-btn">CONFIG</button>
+        </div>
+      </header>
+
+      <div class="flex gap-2.5 mb-8">
+        <input type="text" id="company" placeholder="会社名を入力" autocomplete="off" autofocus
+          class="flex-1 px-5 py-3.5 sm:px-4 sm:py-3 text-base border border-[rgba(255,255,255,0.1)] rounded-lg bg-[rgba(255,255,255,0.04)] text-[#e0e0e0] outline-none transition focus:border-neon-cyan focus:shadow-[0_0_12px_rgba(0,229,255,0.1)] placeholder:text-[#777]">
+        <button id="analyze-btn"
+          class="px-8 py-3.5 sm:px-5 sm:py-3 text-sm font-bold font-mono border border-neon-green rounded-lg bg-transparent text-neon-green cursor-pointer whitespace-nowrap transition uppercase tracking-wider hover:bg-[rgba(0,255,170,0.1)] hover:shadow-[0_0_16px_rgba(0,255,170,0.15)] active:scale-[0.97] disabled:border-[#444] disabled:text-[#444] disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
+          SCAN
+        </button>
+      </div>
+
+      <div id="loading" class="loading hidden">
+        <div class="bouncing-dots">
+          <span class="dot dot-1"></span>
+          <span class="dot dot-2"></span>
+          <span class="dot dot-3"></span>
+        </div>
+        <p class="text-[#9494b0] text-sm font-mono uppercase tracking-widest">Scanning...</p>
+      </div>
+
+      <div id="result" class="result hidden"></div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-analysis" id="sidebar-analysis"></div>
+      <div class="sidebar-history">
+        <div class="sidebar-history-header">
+          <h2>History</h2>
+        </div>
+        <div id="history" class="sidebar-history-list"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 設定モーダル -->
+  <div id="settings-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="flex items-center justify-between px-6 py-5 border-b border-[rgba(255,255,255,0.08)]">
+        <h2 class="text-lg font-bold text-neon-green font-mono uppercase tracking-wide">Config</h2>
+        <button class="text-xl text-[#9494b0] hover:text-neon-pink rounded-lg px-2 py-1 transition border-none bg-transparent cursor-pointer" onclick="closeSettings()">×</button>
+      </div>
+      <div class="px-6 py-5 overflow-y-auto flex-1">
+        <p class="text-[#9494b0] text-sm mb-4">自社製品を登録すると、偵察・ロープレに反映</p>
+        <div id="product-list"></div>
+        <button class="add-product-btn" onclick="addProductForm()">＋ 製品を追加</button>
+      </div>
+      <div class="px-6 py-4 border-t border-[rgba(255,255,255,0.08)]">
+        <button class="w-full py-3 bg-transparent text-neon-green border border-neon-green rounded-lg font-mono text-sm font-bold cursor-pointer transition uppercase tracking-wider hover:bg-[rgba(0,255,170,0.1)] hover:shadow-[0_0_12px_rgba(0,255,170,0.2)]" onclick="saveSettings()">SAVE</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="demo.js"></script>
+  <script src="app.js?v=27"></script>
+</body>
+</html>
